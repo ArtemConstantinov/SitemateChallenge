@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+    nginx:
+        image: nginx:1.21-alpine-perl
+        container_name: sitemate-nginx
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./config/nginx/base.conf:/etc/nginx/nginx.conf
+            - ./config/nginx/demo.conf:/etc/nginx/conf.d/nginx.conf
+            - ./config/nginx/tls:/tls
+        depends_on:
+            - frontend
+            - backend
+
+    frontend:
+        image: sitemate_frontend
+        build:
+            context: .
+            dockerfile: ./config/dockerfiles/Frontend.dockerfile
+            target: development
+        container_name: sitemate-frontend
+        restart: unless-stopped
+        expose:
+            - "3000"
+        working_dir: /app
+        command: "yarn dev"
+        volumes:
+            - /app/node_modules
+            - ./project/client:/app
+            - ./storage/logs/frontend:/root/.npm/_logs/
+
+    backend:
+        image: sitemate_backend
+        build:
+            context: .
+            dockerfile: ./config/dockerfiles/Backend.dockerfile
+            target: backend-development
+        container_name: sitemate-backend
+        restart: unless-stopped
+        working_dir: /app
+        volumes:
+            - ./project/server:/app
+            - ./storage/data:/etc/data
+        expose:
+            - "8888"
+
+
+
+
+
+

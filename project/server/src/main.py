@@ -3,14 +3,22 @@ from typing import Union, Generator
 from uuid import UUID
 from loguru import logger
 from fastapi import Depends, FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from .components.models import Issue, IssuePayload
 from .components import reader
 from . import const
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
-## Not very good sollution
+ORIGINS = ['*']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_storage() -> Generator[reader.DataStorage, None, None]:
