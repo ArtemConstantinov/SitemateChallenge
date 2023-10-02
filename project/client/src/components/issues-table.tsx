@@ -35,7 +35,7 @@ export default function IssuesTable({ issues, }: Props) {
         switch (columnKey) {
             case "title":
                 return (
-                    <p className="text-bold text-sm capitalize">
+                    <p className="text-left text-bold text-sm capitalize" >
                         {issue.title}
                     </p>
                 );
