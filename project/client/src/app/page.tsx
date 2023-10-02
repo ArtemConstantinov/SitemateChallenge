@@ -1,5 +1,5 @@
 "use client"
-import { Badge } from "@nextui-org/badge";
+// import { Badge } from "@nextui-org/badge";
 // import { title, subtitle } from "@/components/primitives";
 import { useEffect, useState } from "react";
 import { get_all, Issue } from "@/lib/api";
