@@ -42,9 +42,7 @@ export default function IssuesTable({ issues, }: Props) {
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Details">
-                            <ViewDialog id={issue.id}/>
-                        </Tooltip>
+                        <ViewDialog id={issue.id}/>
                         <Tooltip content="Edit Issue">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                 <Icon path={mdiPencilOutline} size={1} />

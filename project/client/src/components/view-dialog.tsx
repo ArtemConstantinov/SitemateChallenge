@@ -1,7 +1,7 @@
 import Icon from "@mdi/react";
 import { mdiEyeOutline } from "@mdi/js";
 import { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Tooltip } from "@nextui-org/react";
 import { get_issue, Issue } from "@/lib/api";
 
 interface Props {
@@ -22,9 +22,11 @@ export default function ViewDialog({ id }: Props) {
 
     return (
         <>
-            <span onClick={onOpen} className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <Icon path={mdiEyeOutline} size={1} />
-            </span>
+            <Tooltip content="Details">
+                <span onClick={onOpen} className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                    <Icon path={mdiEyeOutline} size={1} />
+                </span>
+            </Tooltip>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
