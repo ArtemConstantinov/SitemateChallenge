@@ -6,15 +6,20 @@ import { mdiPencilOutline } from "@mdi/js";
 import ViewDialog from "./view-dialog";
 import DeleteButton from "./delete-btn";
 
-interface Issue {
-    id: string;
+interface IssuePayload {
     title: string;
     description: string;
 }
+interface Issue extends IssuePayload {
+    id: string;
+}
+
+
 
 interface Props {
     issues: Issue[];
     onIssueDeleted?: (id: string) => void;
+    onIssueUpdated?: (id: string, payload: IssuePayload) => void;
 };
 
 interface Column {
@@ -29,11 +34,17 @@ const columns = [
 ];
 
 
-export default function IssuesTable({ issues, onIssueDeleted }: Props) {
+export default function IssuesTable({ issues, onIssueDeleted, onIssueUpdated}: Props) {
 
     function onDelete(id: string): void {
         if (onIssueDeleted) {
             onIssueDeleted(id)
+        }
+    };
+
+    function onUpdated(id: string, payload: IssuePayload) {
+        if (onIssueUpdated) {
+            onIssueUpdated(id, payload)
         }
     };
 
@@ -51,11 +62,7 @@ export default function IssuesTable({ issues, onIssueDeleted }: Props) {
                 return (
                     <div className="relative flex items-center gap-2">
                         <ViewDialog id={issue.id} />
-                        <Tooltip content="Edit Issue">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <Icon path={mdiPencilOutline} size={1} />
-                            </span>
-                        </Tooltip>
+                        
                         <Tooltip color="danger" content="Delete Issue">
                             <DeleteButton
                                 id={issue.id}

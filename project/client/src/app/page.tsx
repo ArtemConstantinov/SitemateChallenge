@@ -53,6 +53,7 @@ export default function Home() {
                     <IssuesTable 
                         issues={issues}
                         onIssueDeleted={deleteIssue}
+                        onIssueUpdated={updateIssue}
                     />
                 </div>
             </section>

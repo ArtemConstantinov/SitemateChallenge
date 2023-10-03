@@ -1,15 +1,15 @@
-// import Icon from "@mdi/react";
-// import { mdiEyeOutline } from "@mdi/js";
+import Icon from "@mdi/react";
+import { mdiPencilOutline } from "@mdi/js";
 import { useEffect, useState, FormEvent } from "react";
-import { button as buttonStyles } from "@nextui-org/theme";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Textarea } from "@nextui-org/react";
-import { create_issue, Issue } from "@/lib/api";
+
+import {Tooltip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Textarea } from "@nextui-org/react";
+import { update_issue, Issue } from "@/lib/api";
 
 interface Props {
     onNewIssue: (issue: Issue) => void;
 }
 
-export default function AddDialog({ onNewIssue }: Props) {
+export default function UpdateDialog({ onNewIssue }: Props) {
     const [loading, setLoading] = useState<boolean>(false);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -39,9 +39,14 @@ export default function AddDialog({ onNewIssue }: Props) {
 
     return (
         <>
-            <Button size="sm" onPress={onOpen} color="danger">
-                Add new issue
-            </Button>
+            <Tooltip content="Edit Issue">
+                <span 
+                    onClick={onOpen} 
+                    className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                >
+                    <Icon path={mdiPencilOutline} size={1} />
+                </span>
+            </Tooltip>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <form onSubmit={onFormConfirm}>
