@@ -2,17 +2,19 @@
 import { useCallback } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip } from "@nextui-org/react";
 import Icon from "@mdi/react";
-import { mdiEyeOutline, mdiPencilOutline, mdiDeleteOutline } from "@mdi/js";
+import { mdiPencilOutline } from "@mdi/js";
 import ViewDialog from "./view-dialog";
+import DeleteButton from "./delete-btn";
 
 interface Issue {
-    id: String;
-    title: String;
-    description: String;
+    id: string;
+    title: string;
+    description: string;
 }
 
 interface Props {
     issues: Issue[];
+    onIssueDeleted?: (id: string) => void;
 };
 
 interface Column {
@@ -27,7 +29,13 @@ const columns = [
 ];
 
 
-export default function IssuesTable({ issues, }: Props) {
+export default function IssuesTable({ issues, onIssueDeleted }: Props) {
+
+    function onDelete(id: string): void {
+        if (onIssueDeleted) {
+            onIssueDeleted(id)
+        }
+    };
 
     const renderCell = useCallback((issue: Issue, columnKey: string) => {
         const cellValue = issue[columnKey];
@@ -42,16 +50,17 @@ export default function IssuesTable({ issues, }: Props) {
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
-                        <ViewDialog id={issue.id}/>
+                        <ViewDialog id={issue.id} />
                         <Tooltip content="Edit Issue">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                 <Icon path={mdiPencilOutline} size={1} />
                             </span>
                         </Tooltip>
                         <Tooltip color="danger" content="Delete Issue">
-                            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                <Icon path={mdiDeleteOutline} size={1} />
-                            </span>
+                            <DeleteButton
+                                id={issue.id}
+                                onIssueDeleted={onDelete}
+                            />
                         </Tooltip>
                     </div>
                 );
@@ -61,7 +70,11 @@ export default function IssuesTable({ issues, }: Props) {
     }, []);
 
     return (
-        <Table removeWrapper aria-label="Example static collection table">
+        <Table
+            removeWrapper
+            aria-label="Example static collection table"
+            className="min-w-[458px]"
+        >
             <TableHeader columns={columns}>
                 {(column: Column) => (
                     <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
@@ -69,7 +82,7 @@ export default function IssuesTable({ issues, }: Props) {
                     </TableColumn>
                 )}
             </TableHeader>
-            <TableBody items={issues}>
+            <TableBody items={issues} emptyContent={"No rows to display."}>
                 {(item: Issue) => (
                     <TableRow key={item.id}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

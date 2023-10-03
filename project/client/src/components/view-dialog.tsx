@@ -22,7 +22,7 @@ export default function ViewDialog({ id }: Props) {
 
     return (
         <>
-            <Tooltip content="Details">
+            <Tooltip content="Details" showArrow>
                 <span onClick={onOpen} className="text-lg text-default-400 cursor-pointer active:opacity-50">
                     <Icon path={mdiEyeOutline} size={1} />
                 </span>

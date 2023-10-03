@@ -37,8 +37,8 @@ def issues_list(storage: reader.DataStorage = Depends(get_storage)) -> list[Issu
     return storage.all()
 
 
-@app.post("/issues/{item_id}", response_model=Union[Issue, None])
-def issue_create(item_id: UUID, issue: IssuePayload, storage: reader.DataStorage = Depends(get_storage)):
+@app.post("/issues", response_model=Union[Issue, None])
+def issue_create(issue: IssuePayload, storage: reader.DataStorage = Depends(get_storage)):
     # Create: accepts a JSON object & prints/logs the object
     obj = storage.add(issue)
     if obj:
